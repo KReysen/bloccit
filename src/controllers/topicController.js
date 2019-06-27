@@ -9,5 +9,10 @@ module.exports = {
         res.render("topics/index", {topics});
       }
     })
+  },
+
+  new(req, res, next){
+    res.render("topics/new");
   }
+
 }
