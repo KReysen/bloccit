@@ -5,15 +5,14 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 
 describe("routes : topics", () => {
-
   beforeEach((done) => {
       this.topic;
       sequelize.sync({force: true}).then((res) => {
 
-       Topic.create({
-         title: "JS Frameworks",
-         description: "There is a lot of them"
-       })
+        Topic.create({
+          title: "JS Frameworks",
+          description: "There is a lot of them"
+        })
         .then((topic) => {
           this.topic = topic;
           done();
@@ -22,10 +21,8 @@ describe("routes : topics", () => {
           console.log(err);
           done();
         });
-
-      });
-
-    });
+     });
+  });
 
   describe("GET /topics", () => {
 
@@ -43,14 +40,13 @@ describe("routes : topics", () => {
 
     describe("GET /topics/new", () => {
 
-    it("should render a new topic form", (done) => {
-      request.get(`${base}new`, (err, res, body) => {
-        expect(err).toBeNull();
-        expect(body).toContain("New Topic");
-        done();
+        it("should render a new topic form", (done) => {
+          request.get(`${base}new`, (err, res, body) => {
+            expect(err).toBeNull();
+            expect(body).toContain("New Topic");
+            done();
+          });
+        });
       });
-    });
-
-  });
 
 });
