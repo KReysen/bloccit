@@ -34,10 +34,10 @@ describe("routes : advertisement", () => {
         expect(res.statusCode).toBe(200);
         expect(err).toBeNull();
         expect(body).toContain("Advertisement");
-        expect(body).toContaion("JS Frameworks");
+        expect(body).toContain("JS Frameworks");
         done();
       });
     });
   });
-  
+
 });
