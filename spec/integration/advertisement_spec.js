@@ -26,7 +26,6 @@ describe("routes : advertisement", () => {
   });
 });
 
-
   describe("GET /advertisement", () => {
 
     it("should return a status code 200 and all advertisements", (done) => {
@@ -49,5 +48,31 @@ describe("routes : advertisement", () => {
       });
     });
   });
+
+  describe("POST /advertisement/create", () => {
+    const options = {
+      url: `${base}create`,
+      form: {
+        title: "blink-182 songs",
+        description: "What's your favorite blink-182 song?"
+      }
+    };
+    it("should create a new ad and redirect", (done) => {
+      request.post(options, (err, res, body) => {
+        Advertisement.findOne({where: {title: "blink-182 songs"}})
+        .then((advertisement) => {
+          expect(res.statusCode).toBe(303);
+          expect(advertisement.title).toBe("blink-182 songs");
+          expect(advertisement.description).toBe("What's your favorite blink-182 song?");
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      }
+    );
+   });
+ });
 
 });
