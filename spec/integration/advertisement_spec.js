@@ -40,4 +40,14 @@ describe("routes : advertisement", () => {
     });
   });
 
+  describe("GET /advertisement/new", () => {
+    it("should render a new ad creation form", (done) => {
+      request.get(`${base}new`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("New Advertisement");
+        done();
+      });
+    });
+  });
+
 });

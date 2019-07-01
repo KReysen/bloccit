@@ -9,6 +9,11 @@ module.exports = {
         res.render("advertisement/index", {advertisement});
       }
     })
+  },
 
+  new(req, res, next) {
+    res.render("advertisement/new");
   }
+
+  
 }
