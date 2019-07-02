@@ -47,6 +47,26 @@ module.exports = {
          res.redirect(303, "/advertisement")
        }
      });
+   },
+
+   edit(req, res, next){
+     adQueries.getAdvertisement(req.params.id, (err, advertisement) => {
+       if(err || advertisement == null){
+         res.redirect(404, "/");
+       } else {
+         res.render("advertisement/edit", {advertisement});
+       }
+     });
+   },
+
+   update(req, res, next){
+     adQueries.updateAdvertisement(req.params.id, req.body, (err, advertisement) =>{
+       if(err || advertisement == null){
+         res.redirect(404, `/advertisement/${req.params.id}/edit`);
+       } else {
+         res.redirect(`/advertisement/${advertisement.id}`);
+       }
+     });
    }
 
 
