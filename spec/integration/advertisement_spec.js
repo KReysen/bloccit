@@ -75,4 +75,35 @@ describe("routes : advertisement", () => {
    });
  });
 
-});
+   describe("GET /advertisement/:id", () => {
+     it("should render a view with the selected ad", (done) => {
+       request.get(`${base}${this.advertisement.id}`, (err, res, body) => {
+         expect(err).toBeNull();
+         expect(body).toContain("JS Frameworks");
+         done();
+       });
+     });
+   });
+
+   describe("POST /advertisement/:id/destroy", () => {
+
+     it("should delete the ad with the associated ID", (done) => {
+
+       Advertisement.all()
+       .then((advertisement) => {
+         const adCountBeforeDelete = advertisement.length;
+         expect(adCountBeforeDelete).toBe(1);
+         request.post(`${base}${this.advertisement.id}/destroy`, (err, res, body) => {
+           Advertisement.all()
+           .then((advertisement) => {
+             expect(err).toBeNull();
+             expect(advertisement.length).toBe(adCountBeforeDelete - 1);
+             done();
+           })
+         });
+       });
+     });
+   });
+
+
+}); // end test suite

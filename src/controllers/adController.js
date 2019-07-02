@@ -27,6 +27,26 @@ module.exports = {
          res.redirect(303, `/advertisement/${advertisement.id}`);
        }
      });
+   },
+
+   show(req, res, next){
+     adQueries.getAdvertisement(req.params.id, (err, advertisement) => {
+       if(err || advertisement == null){
+         res.redirect(404, "/");
+       } else {
+         res.render("advertisement/show", {advertisement});
+       }
+     });
+   },
+
+   destroy(req, res, next){
+     adQueries.deleteAdvertisement(req.params.id, (err, advertisement) => {
+       if(err){
+         res.redirect(500, `/advertisement/${advertisement.id}`)
+       } else {
+         res.redirect(303, "/advertisement")
+       }
+     });
    }
 
 
