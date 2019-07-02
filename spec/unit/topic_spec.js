@@ -54,7 +54,13 @@ describe("Topic", () => {
   });
 // For getPosts, create and associate a post with the topic in scope. The getPosts method returns an array of Post objects that are associated with the topic the method was called on. The test should confirm that the associated post is returned when that method is called.
   describe("#getPosts()", () => {
-    
+    it("Should return the posts associated with the given topic", (done) => {
+      Post.create({
+        title: "Cons of Cryosleep",
+        body: "Miss out on space scenery",
+        topicId: this.topic.id
+      })
+    })
   })
 
 
