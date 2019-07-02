@@ -60,8 +60,19 @@ describe("Topic", () => {
         body: "Miss out on space scenery",
         topicId: this.topic.id
       })
-    })
-  })
+      .then((post) => {
+        this.topic.getPosts()          // getPosts method
+        .then((posts) => {
+          expect(posts[0].title).toBe("Cons of Cryosleep");
+        });
+        done();
+      })
+      .catch((err) => {
+         console.log(err);
+        done();
+      });
+    });
+  });
 
 
 });
