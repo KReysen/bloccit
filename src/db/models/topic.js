@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "topicId",
       as: "posts"
     });
+    
   };
   return Topic;
 };
