@@ -21,7 +21,6 @@ module.exports = {
          as: "posts"
        }]
      })
-
      .then((topic) => {
        callback(null, topic);
      })
