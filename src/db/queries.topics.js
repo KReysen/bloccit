@@ -13,21 +13,21 @@ module.exports = {
     })
   },
 
-  getTopic(id, callback){
-     return Topic.findById(id)
-     return Topic.findById(id, {
-       include: [{
-         model: Post,
-         as: "posts"
-       }]
-     })
-     .then((topic) => {
-       callback(null, topic);
-     })
-     .catch((err) => {
-       callback(err);
-     })
-   },
+  getTopic(id, callback) {
+
+    return Topic.findById(id, {
+      include: [{
+        model: Post,
+        as: "posts"
+      }]
+    })
+      .then((topic) => {
+        callback(null, topic);
+      })
+      .catch((err) => {
+        callback(err);
+      })
+  },
 
   addTopic(newTopic, callback){
      return Topic.create({
