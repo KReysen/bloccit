@@ -45,4 +45,14 @@ describe("routes : flairs", () => {
     });
   });
 
+  describe("GET /topics/:topicId/flairs/new", () => {
+    it("should render a new flair form", (done) =>{
+      request.get(`${base}/${this.topic.id}/flairs/new`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("New Flair");
+        done();
+      });
+    });
+  });
+
 });
