@@ -84,4 +84,14 @@ describe("routes : flairs", () => {
     });
   });
 
+  describe("GET /posts/:postId/flairs/:id", () => {
+    it("should render a view with the selected flair", (done) => {
+      request.get(`${base}/${this.post.id}/flairs/${this.flair.id}`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("Charlotte Flair");
+        done();
+      });
+    });
+  });
+
 });
