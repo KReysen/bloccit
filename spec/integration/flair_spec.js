@@ -108,4 +108,15 @@ describe("routes : flairs", () => {
     });
   });
 
+  describe("GET /posts/:postId/flairs/:id/edit", () => {
+    it("should render a view with an edit flair form", (done) => {
+      request.get(`${base}/${this.post.id}/flairs/${this.flair.id}/edit`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("Edit Flair");
+        expect(body).toContain("Charlotte Flair");
+        done();
+      });
+    });
+  });
+
 });

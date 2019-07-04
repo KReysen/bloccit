@@ -38,6 +38,16 @@ module.exports = {
         res.redirect(303, `/posts/${req.params.flairId}`)
       }
     });
+  },
+
+  edit(req, res, next){
+    flairQueries.getFlair(req.params.id, (err, flair) => {
+      if(err || flair == null){
+        res.redirect(404, "/");
+      } else {
+        res.render("flairs/edit", {flair});
+      }
+    });
   }
 
 }
