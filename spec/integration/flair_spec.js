@@ -58,4 +58,30 @@ describe("routes : flairs", () => {
     });
   });
 
+  describe("POST /posts/:postId/flairs/create", () => {
+    it("should create a new flair and redirect", (done) => {
+      const options = {
+        url: `${base}/${this.post.id}/flairs/create`,
+        form: {
+          name: "Becky with the good flair",
+          color: "Orange"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Flair.findOne({where: {name: "Becky with the good flair"}})
+        .then((flair) => {
+          expect(flair).not.toBeNull();
+          expect(flair.name).toBe("Becky with the good flair");
+          expect(flair.color).toBe("Orange");
+          expect(flair.postId).not.toBeNull();
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+  });
+
 });
