@@ -8,5 +8,6 @@ router.post("/posts/:postId/flairs/create", flairController.create);
 router.get("/posts/:postId/flairs/:id", flairController.show);
 router.post("/posts/:postId/flairs/:id/destroy", flairController.destroy);
 router.get("/posts/:postId/flairs/:id/edit", flairController.edit);
+router.post("/posts/:postId/flairs/:id/update", flairController.update);
 
 module.exports = router;

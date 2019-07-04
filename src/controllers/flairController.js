@@ -48,6 +48,16 @@ module.exports = {
         res.render("flairs/edit", {flair});
       }
     });
-  }
+  },
+
+  update(req, res, next){
+     flairQueries.updateFlair(req.params.id, req.body, (err, flair) => {
+       if(err || flair == null){
+         res.redirect(404, `/posts/${req.params.postId}/flairs/${req.params.id}/edit`);
+       } else {
+         res.redirect(`/posts/${req.params.postId}/flairs/${req.params.id}`);
+       }
+     });
+   }
 
 }
