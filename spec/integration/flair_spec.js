@@ -94,4 +94,18 @@ describe("routes : flairs", () => {
     });
   });
 
+  describe("POST /posts/:postId/flairs/:id/destroy", () => {
+    it("should delete the flair with the associated ID", (done) => {
+      expect(this.flair.id).toBe(1);
+      request.post(`${base}/${this.post.id}/flairs/${this.flair.id}/destroy`, (err, res, body) => {
+        Flair.findById(1)
+        .then((flair) => {
+          expect(err).toBeNull();
+          expect(flair).toBeNull();
+          done();
+        })
+      });
+    });
+  });
+
 });
