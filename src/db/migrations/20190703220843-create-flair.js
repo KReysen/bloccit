@@ -24,7 +24,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      topicId: {
+      postId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE", // delete flair if topic is deleted
         allowNull: false,    // validation to prevent null value
