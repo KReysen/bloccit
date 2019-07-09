@@ -47,9 +47,29 @@ describe("routes : posts", () => {
    });  // end beforeEach
 
    // define admin user context
-   describe("admin user performing CRUD actions for Post", () => {
+   describe("admin/owner user performing CRUD actions for Post", () => {
      // send mock request and authenticate as admin user
-
+     beforeEach((done) => {
+            User.create({
+              email: "admin@example.com",
+              password: "123456",
+              role: "admin"
+            })
+            .then((user) => {
+              request.get({         // mock authentication
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                  role: user.role,     // mock authenticate as admin user
+                  userId: user.id,
+                  email: user.email
+                }
+              },
+                (err, res, body) => {
+                  done();
+                }
+              );
+            });
+          });
      // old tests
 
      describe("GET /topics/:topicId/posts/new", () => {
@@ -204,8 +224,19 @@ describe("routes : posts", () => {
    }) //end admin user tests
    // define guest user context
    describe("guest user performing CRUD actions for Post", () => {
-   // send mock request and authenticate as guest user
-
+   // send mock request and authenticate as member user
+   beforeEach((done) => {
+       request.get({
+         url: "http://localhost:3000/auth/fake",
+         form: {
+           role: "member"
+         }
+       },
+         (err, res, body) => {
+           done();
+         }
+       );
+     });
    //Old tests here
 
    describe("GET /topics/:topicId/posts/new", () => {
