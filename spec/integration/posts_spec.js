@@ -45,6 +45,8 @@ describe("routes : posts", () => {
 
    });  // end beforeEach
 
+   // tests for guest user
+
   describe("GET /topics/:topicId/posts/new", () => {
 
       it("should render a new post form", (done) => {
