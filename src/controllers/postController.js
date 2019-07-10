@@ -1,9 +1,17 @@
 const postQueries = require("../db/queries.posts.js");
+const Authorizer = require("../policies/post.js");
 
 module.exports = {
 
   new(req, res, next) {
-    res.render("posts/new", {topicId: req.params.topicId});
+    const authorized = new Authorizer(req.user).new();
+
+     if(authorized) {
+       res.render("topics/new");
+     } else {
+       req.flash("notice", "You are not authorized to do that.");
+       res.redirect("/topics");
+     }
   },
 
   create(req, res, next){
