@@ -1,5 +1,7 @@
 const Post = require("./models").Post;
 const Topic = require("./models").Topic;
+const Comment = require("./models").Comment;
+const User = require("./models").User;
 
 module.exports = {
 
@@ -12,9 +14,15 @@ module.exports = {
         callback(err);
       })
     },
-
+// findByPk method caused problems in past checkpoint
   getPost(id, callback){
-   return Post.findById(id)
+    return Post.findById(id, {
+        include: [
+          {model: Comment, as: "comments", include: [
+            {model: User }
+          ]}
+        ]
+      })
    .then((post) => {
      callback(null, post);
    })

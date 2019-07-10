@@ -15,8 +15,21 @@
         <button type="submit" class="btn btn-danger">Delete</button>
           <small class="text-muted" id="titleHelp">title must be 2 or more characters in length.</small>
           <small class="text-muted" id="bodyHelp">body must be 10 or more characters in length.</small>
-
         </form>
+      <section id="comment-form">
+        <% if(currentUser) { %>
+          <% include ../comments/new.ejs %>
+        <% } %>
+     </section>
+
+     <section id="comment-list">
+       <% if(post.comments) { %>
+        <% post.comments.forEach((comment) => { %>
+
+          <%- include("../comments/show.ejs", {comment}) %>
+        <% }) %>
+      <% } %>
+    </section>
 
     </main>
 
