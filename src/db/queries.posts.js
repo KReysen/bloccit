@@ -24,7 +24,7 @@ module.exports = {
    })
  },
 
- deletePost(id, callback){
+ deletePost(req, callback){
   return Post.findById(req.params.id)
   .then((post) => {
     const authorized = new Authorizer(req.user, post).destroy();
