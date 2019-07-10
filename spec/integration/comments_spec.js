@@ -130,8 +130,9 @@ describe("routes : comments", () => {
          })
        });
      });
-   });
-  // Signed-in user context here
+   }); // end guest Context
+
+  // Signed-in user creating/deleting own comment context
   describe("signed in user performing CRUD actions for Comment", () => {
 
      beforeEach((done) => {    // before each suite in this context
@@ -196,15 +197,95 @@ describe("routes : comments", () => {
                expect(comments.length).toBe(commentCountBeforeDelete - 1);
                done();
              })
-
            });
          })
+       });
+     });
+   }); //end context for signed in user creating/deleting own comments
 
+    // Context for signed in user acting on others comments
+    describe("signed in user performing CRUD actions for Comment", () => {
+      describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
+       beforeEach((done) => {    // before each suite in this context
+         request.get({           // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: "member",     // mock authenticate as member user
+             userId: this.user.id
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
        });
 
-     });
+         it("should create a new comment and redirect", (done) => {
+           const options = {
+             url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
+             form: {
+               body: "This comment is amazing!"
+             }
+           };
+           request.post(options,
+             (err, res, body) => {
+               Comment.findOne({where: {body: "This comment is amazing!"}})
+               .then((comment) => {
+                 expect(comment).not.toBeNull();
+                 expect(comment.body).toBe("This comment is amazing!");
+                 expect(comment.id).not.toBeNull();
+                 done();
+               })
+               .catch((err) => {
+                 console.log(err);
+                 done();
+               });
+             }
+           );
+         });
+       });
 
-   }); //end context for signed in user
+  // #3
+       describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+         beforeEach((done) => {    // before each suite in this context
+           request.get({           // mock authentication
+             url: "http://localhost:3000/auth/fake",
+             form: {
+               role: "member",     // mock authenticate as member user
+               userId: 5
+             }
+           },
+             (err, res, body) => {
+               done();
+             }
+           );
+         });
+         it("should NOT delete another member's comment", (done) => {
+           Comment.findAll()
+           .then((comments) => {
+             const commentCountBeforeDelete = comments.length;
+
+             expect(commentCountBeforeDelete).toBe(1);
+
+             request.post(
+              `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+               (err, res, body) => {
+               expect(res.statusCode).toBe(401);
+               Comment.findAll()
+               .then((comments) => {
+                 expect(err).toBeNull();
+                 expect(comments.length).toBe(commentCountBeforeDelete);
+                 done();
+               })
+             });
+           })
+         });
+       });
+      });
+    // end user deleting another user's content Context
+
+    //begin admin deleting another's comment context
 
 
-});  // end 
+
+});  // end
