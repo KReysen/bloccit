@@ -285,7 +285,89 @@ describe("routes : comments", () => {
     // end user deleting another user's content Context
 
     //begin admin deleting another's comment context
+    describe("admin performing CRUD actions for another's Comment", () => {
+      describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
+       beforeEach((done) => {    // before each suite in this context
+         request.get({           // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: "member",     // mock authenticate as member user
+             userId: this.user.id
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
+       });
 
+         it("should create a new comment and redirect", (done) => {
+           const options = {
+             url: `${base}${this.topic.id}/posts/${this.post.id}/comments/create`,
+             form: {
+               body: "This comment is amazing!"
+             }
+           };
+           request.post(options,
+             (err, res, body) => {
+               Comment.findOne({where: {body: "This comment is amazing!"}})
+               .then((comment) => {
+                 expect(comment).not.toBeNull();
+                 expect(comment.body).toBe("This comment is amazing!");
+                 expect(comment.id).not.toBeNull();
+                 done();
+               })
+               .catch((err) => {
+                 console.log(err);
+                 done();
+               });
+             }
+           );
+         });
+       });
+
+       describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+         beforeEach((done) => {
+           User.create({
+             email: "mack@mydog.com",
+             password: "woof",
+             role: "admin"
+           })
+           .then((user) => {
+           request.get({           // mock authentication
+             url: "http://localhost:3000/auth/fake",
+             form: {
+               role: user.role,     // mock authenticate as admin user
+               userId: user.id,
+               email: user.email
+             }
+           },
+             (err, res, body) => {
+               done();
+             }
+           );
+         });
+       });
+         it("should delete another member's comment", (done) => {
+           Comment.findAll()
+           .then((comments) => {
+             const commentCountBeforeDelete = comments.length;
+             expect(commentCountBeforeDelete).toBe(1);
+             request.post(
+              `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+               (err, res, body) => {
+               expect(res.statusCode).toBe(302);
+               Comment.findAll()
+               .then((comments) => {
+                 expect(err).toBeNull();
+                 expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                 done();
+               })
+             });
+           })
+         });
+       });
+      });
 
 
 });  // end
