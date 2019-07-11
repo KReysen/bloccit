@@ -240,9 +240,51 @@ describe("routes : comments", () => {
        })
      });
    });
-  }); // end of destroy comment suite
+ }); // end of user deleting another user's comment
 
-   }); //end context for signed in user
+// admin user deleting another user's comment
+describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+  beforeEach((done) => {
+    User.create({
+      email: "mack@mydog.com",
+      password: "woof",
+      role: "admin"
+    })
+    .then((user) => {
+      request.get({
+        url: "http://localhost:3000/auth/fake",
+        form: {
+          role: user.role,
+          userId: user.id,
+          email: user.email
+        }
+      },
+      (err, res, body) => {
+        done();
+      }
+    );
+  });
+});
 
-
+it("should delete another member's comment", (done) => {
+  Comment.findAll()
+  .then((comments) => {
+    const commentCountBeforeDelete = comments.length;
+    expect(commentCountBeforeDelete).toBe(1);
+    request.post(
+      `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+      (err, res, body) => {
+        expect(res.statusCode).toBe(302);
+        Comment.findAll()
+        .then((comments) => {
+          expect(err).toBeNull();
+          expect(comments.length).toBe(commentCountBeforeDelete - 1);
+          done();
+        })
+      }
+    );
+  });
+});
+});
+}); //end context for signed in user
 });  //End describe routes: comments
