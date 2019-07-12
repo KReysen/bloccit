@@ -69,6 +69,8 @@ describe("routes : posts", () => {
           body: "Without a doubt my favoriting things to do besides watching paint dry!"
         }
       };
+      console.log(options);
+
       request.post(options,
         (err, res, body) => {
 
@@ -85,6 +87,7 @@ describe("routes : posts", () => {
             done();
           });
         });
+
     });
 
     it("should not create a new post that fails validations", (done) => {
