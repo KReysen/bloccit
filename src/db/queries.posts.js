@@ -1,11 +1,6 @@
 const Post = require("./models").Post;
 const Topic = require("./models").Topic;
-<<<<<<< HEAD
-const Comment = require("./models").Comment;
-const User = require("./models").User;
-=======
 const Authorizer = require("../policies/post.js");
->>>>>>> Authorization-assign
 
 module.exports = {
 
