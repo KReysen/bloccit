@@ -5,6 +5,8 @@ const base = "http://localhost:3000/topics";
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const User = require("../../src/db/models").User;
+
 
 describe("routes : posts", () => {
 
@@ -82,9 +84,9 @@ describe("routes : posts", () => {
             console.log(err);
             done();
           });
-        }
-      );
+        });
     });
+
     it("should not create a new post that fails validations", (done) => {
        const options = {
          url: `${base}/${this.topic.id}/posts/create`,
