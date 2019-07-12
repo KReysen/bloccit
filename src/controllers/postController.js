@@ -30,10 +30,7 @@ module.exports = {
           res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
         }
       });
-    } else {
-      req.flash("notice", "You are not authorized to do that.");
-      res.redirect("/posts");
-    }
+    } 
   },
 
   show(req, res, next){
@@ -46,14 +43,28 @@ module.exports = {
      });
    },
 
-   destroy(req, res, next){
-     postQueries.deletePost(req, (err, post) => {
-       if(err){
-         res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
-       } else {
-         res.redirect(303, `/topics`)
-       }
-     });
+   destroy(req, res, next) {
+
+       postQueries.getPost(req.params.id, (err, post) => {
+           if(err || post == null) {
+               res.redirect(404, "/");
+           } else {
+               const authorized = new Authorizer(req.user, post).destroy();
+
+               if(authorized) {
+                   postQueries.deletePost(req.params.id, (err, deleteCount) => {
+                       if(err) {
+                           res.redirect(500, "/");
+                       } else {
+                           res.redirect("/");
+                       }
+                   })
+               } else {
+                   req.flash("notice", "You need to be signed in or be the person who created the post");
+                   res.redirect("/");
+               }
+           };
+       });
    },
 
    edit(req, res, next){
@@ -75,13 +86,13 @@ module.exports = {
    },
 
    update(req, res, next){
-     postQueries.updatePost(req, req.body, (err, post) => {
-       if(err || post == null){
-         res.redirect(401, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
-       } else {
-         res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
-       }
-     });
-   }
+        postQueries.updatePost(req.params.id, req.body, (err, post) => {
+          if(err || post == null){
+            res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
+          } else {
+            res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
+          }
+        });
+      }
 
 }
