@@ -3,6 +3,7 @@ const Authorizer = require("../policies/comment.js");
 
 module.exports = {
   create(req, res, next){
+
     const authorized = new Authorizer(req.user).create();
 
     if(authorized) {
@@ -14,6 +15,7 @@ module.exports = {
       };
 
       commentQueries.createComment(newComment, (err, comment) => {
+
         if(err){
           req.flash("error", err);
         }

@@ -10,5 +10,5 @@ router.post("/topics/:topicId/posts/:postId/comments/create",
 
 router.post("/topics/:topicId/posts/:postId/comments/:id/destroy",
   commentController.destroy);
-  
+
 module.exports = router;
