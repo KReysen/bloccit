@@ -291,4 +291,30 @@ describe("Vote", () => {
        });
      });
      //end test for getPoints method
+     // hasUpvoteFor method
+     describe("#hasUpvoteFor()", () => {
+       it("should return true if a user has upvoted the post", (done) => {
+         Vote.create({
+           value: 1,
+           userId: this.user.id,
+           postId: this.post.id
+         })
+         .then((vote) => {
+           vote.postId.hasUpvoteFor()
+           .then((associatedPost) => {
+             expect(this.votes).toBe(true);
+             done();
+           });
+         })
+         .catch((err) => {
+           console.log(err);
+           done();
+         });
+       });
+     });
+     // end hasUpvoteFor method
+
+     //hasDownvoteFor method
+
+     //end hasDownvoteFor method
 });
