@@ -129,6 +129,23 @@ describe("Vote", () => {
 
          })
        });
+       // create vote with invalid value
+       it("should not create an upvote without a value of 1 or -1", (done) => {
+
+         Vote.create({
+           value: 3,
+           postId: this.post.id,
+           userId: this.user.id
+         })
+         .then((vote) => {
+
+         })
+         .catch((err) => {
+           expect(err.message).toContain("Validation isIn on value failed");
+           done();
+         });
+       });
+       //end create vote with invalid value
 
      }); // end create actions
      // begin setUser and getUser
