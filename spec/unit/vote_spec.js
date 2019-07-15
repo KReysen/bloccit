@@ -271,4 +271,24 @@ describe("Vote", () => {
 
       });
      //end setPost and getPost
+     // test for getPoints method
+     describe("#getPoints()", () => {
+       it("should return the score of the associated post", (done) => {
+         Vote.create({
+           value: 1,
+           userId: this.user.id,
+           postId: this.post.id
+         })
+         .then((votes) => {
+           let points = this.post.getPoints();
+           expect(points).toBe(1);
+           done();
+         })
+         .catch((err) => {
+           console.log(err);
+           done();
+         });
+       });
+     });
+     //end test for getPoints method
 });
