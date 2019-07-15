@@ -144,7 +144,35 @@ describe("routes : votes", () => {
            }
          );
        });
-     });
+       // multiple upvotes per user case
+       it("should not create multiple upvotes per user", (done) => {
+         const options = {
+           url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+         };
+         request.get(options,
+           (err, res, body) => {
+             Vote.findOne({
+               where: {
+                 userId: this.user.id,
+                 postId: this.post.id
+               }
+             })
+             .then((vote) => {               // confirm that an upvote was created
+               expect(vote).not.toBeNull();
+               expect(vote.value).toBe(1);
+               expect(vote.userId).toBe(this.user.id);
+               expect(vote.postId).toBe(this.post.id);
+               done();
+             })
+             .catch((err) => {
+               console.log(err);
+               done();
+            });
+          }
+        );
+      });       
+       // end multiple upvotes per user
+     }); // end signed in user upvote
 
      describe("GET /topics/:topicId/posts/:postId/votes/downvote", () => {
 
@@ -177,7 +205,7 @@ describe("routes : votes", () => {
      });
 
    });
-  
+
   // end signed in user context
 
 });
