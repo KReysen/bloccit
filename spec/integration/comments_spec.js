@@ -321,7 +321,7 @@ describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
 });
 
   it("should delete another member's comment", (done) => {
-    Comment.findAll()
+    Comment.all()
     .then((comments) => {
       const commentCountBeforeDelete = comments.length;
       expect(commentCountBeforeDelete).toBe(1);
@@ -329,7 +329,7 @@ describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
         `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
         (err, res, body) => {
           expect(res.statusCode).toBe(302);
-          Comment.findAll()
+          Comment.all()
           .then((comments) => {
             expect(err).toBeNull();
             expect(comments.length).toBe(commentCountBeforeDelete - 1);
