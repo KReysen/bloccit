@@ -145,32 +145,31 @@ describe("routes : votes", () => {
          );
        });
        // multiple upvotes per user case
-       it("should not create multiple upvotes per user", (done) => {
-         const options = {
-           url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
-         };
-         request.get(options,
-           (err, res, body) => {
-             Vote.findOne({
-               where: {
-                 userId: this.user.id,
-                 postId: this.post.id
-               }
-             })
-             .then((vote) => {               // confirm that an upvote was created
-               expect(vote).not.toBeNull();
-               expect(vote.value).toBe(1);
-               expect(vote.userId).toBe(this.user.id);
-               expect(vote.postId).toBe(this.post.id);
-               done();
-             })
-             .catch((err) => {
-               console.log(err);
-               done();
+       it("should not create multiple upvotes per user on same post", (done) => {
+         Post.findOne({where: {title: "My first visit to Proxima Centauri b"}})
+                    .then((post) => {
+                     this.post = post;
+                    Vote.create({
+                        value: 1,
+                        postId: this.post.id,
+                        userId: this.user.id
+                        })
+                        .then((vote) => {
+                        Vote.create({
+                            value: 1,
+                            postId: this.post.id,
+                            userId: this.user.id
+                        })
+                            .then((secondVote) => {
+                                done();
+                            })
+                            .catch((err) => {
+                                expect(err.message).toContain("Validation error");
+                            });
+                        });
+                });
             });
-          }
-        );
-      });       
+
        // end multiple upvotes per user
      }); // end signed in user upvote
 
