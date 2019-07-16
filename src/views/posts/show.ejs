@@ -26,6 +26,10 @@
           <small class="text-muted" id="bodyHelp">body must be 10 or more characters in length.</small>
         </form>
 
+        <% if(currentUser) { %>
+          <% include ../favorites/favoriting.ejs %>
+        <% } %>
+
         <p><%= post.body %></p>
         <section id="comment-form">
           <% if(currentUser) { %>
