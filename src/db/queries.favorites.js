@@ -24,7 +24,7 @@ module.exports = {
   deleteFavorite(req, callback){
     const id = req.params.id;
 
-    return Favorite.findById(id)
+    return Favorite.findByPk(id)
     .then((favorite) => {
 
       if(!favorite){
