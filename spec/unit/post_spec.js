@@ -2,6 +2,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote;
 
 describe("Post", () => {
 
@@ -154,5 +155,58 @@ describe("Post", () => {
       });
     });
   });
+
+  describe("#getPoints()", () => {
+    it("should return the score of the post", (done) => {
+      let points = this.post.getPoints();
+      expect(points).toBe(0);
+      done();
+    });
+  });
+
+  describe("#hasUpvoteFor()", () => {
+    it("should return true if the associated user has upvoted the post", (done) => {
+       Vote.create({
+         value: 1,
+         userId: this.user.id,
+         postId: this.post.id
+       })
+       .then((vote) => {
+         vote.postId.hasUpvoteFor()
+         .then((associatedPost) => {
+           expect(this.votes).toBe(true);
+           done();
+         });
+       })
+       .catch((err) => {
+         console.log(err);
+         done();
+       });
+     });
+  });
+   // end hasUpvoteFor method
+
+   //hasDownvoteFor method
+   describe("#hasDownvoteFor()", () => {
+     it("should return true if a user has downvoted the post", (done) => {
+       Vote.create({
+         value: -1,
+         userId: this.user.id,
+         postId: this.post.id
+       })
+       .then((vote) => {
+         vote.postId.hasDownvoteFor()
+         .then((associatedPost) => {
+           expect(this.votes).toBe(true);
+           done();
+         });
+       })
+       .catch((err) => {
+         console.log(err);
+         done();
+       });
+     });
+   });
+   //end hasDownvoteFor method
 
 });
