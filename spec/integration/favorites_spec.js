@@ -51,10 +51,11 @@ describe("routes : favorites", () => {
    });
  });
 
-  //guest user context
-  describe("guest attempting to favorite on a post", () => {
+ //Guest User Context
 
-    beforeEach((done) => {    // before each suite in this context
+ describe("guest attempting to favorite on a post", () => {
+
+    beforeEach((done) => {    
 
       request.get({
         url: "http://localhost:3000/auth/fake",
@@ -84,9 +85,9 @@ describe("routes : favorites", () => {
 
           request.post(options,
             (err, res, body) => {
-              Favorite.findAll()
+              Favorite.all()
               .then((favorite) => {
-                expect(favCountBeforeCreate).toBe(favorite.length); // confirm no favorites created
+                expect(favCountBeforeCreate).toBe(favorite.length); 
                 done();
               })
               .catch((err) => {
@@ -99,16 +100,16 @@ describe("routes : favorites", () => {
       });
 
     });
-  });
-  // end guest user context
-  // signed in user context
+  }); //End Guest User Context
+
+  //Begin Signed In User Context
   describe("signed in user favoriting a post", () => {
 
-    beforeEach((done) => {  // before each suite in this context
-      request.get({         // mock authentication
+    beforeEach((done) => {  
+      request.get({         
         url: "http://localhost:3000/auth/fake",
         form: {
-          role: "member",     // mock authenticate as member user
+          role: "member",     
           userId: this.user.id
         }
       },
@@ -132,7 +133,7 @@ describe("routes : favorites", () => {
                 postId: this.post.id
               }
             })
-            .then((favorite) => {               // confirm that a favorite was created
+            .then((favorite) => {               
               expect(favorite).not.toBeNull();
               expect(favorite.userId).toBe(this.user.id);
               expect(favorite.postId).toBe(this.post.id);
@@ -175,6 +176,8 @@ describe("routes : favorites", () => {
         });
       });
     });
-  // end signed in user context
- });
+  });
+
+
+  
 });
