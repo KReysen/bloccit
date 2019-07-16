@@ -10,6 +10,7 @@ describe("Post", () => {
      this.topic;
      this.post;
      this.user;
+     this.vote;
 
      sequelize.sync({force: true}).then((res) => {
 
@@ -172,11 +173,10 @@ describe("Post", () => {
          postId: this.post.id
        })
        .then((vote) => {
-         vote.postId.hasUpvoteFor()
-         .then((associatedPost) => {
-           expect(this.votes).toBe(true);
-           done();
-         });
+        this.post.hasUpvoteFor(this.user.id, (res) => {
+          expect(res).toBe(true);
+          done();
+         })
        })
        .catch((err) => {
          console.log(err);
@@ -195,11 +195,10 @@ describe("Post", () => {
          postId: this.post.id
        })
        .then((vote) => {
-         vote.postId.hasDownvoteFor()
-         .then((associatedPost) => {
-           expect(this.votes).toBe(true);
+         this.post.hasDownvoteFor(this.user.id, (res) => {
+           expect(res).toBe(true);
            done();
-         });
+         })
        })
        .catch((err) => {
          console.log(err);
