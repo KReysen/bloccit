@@ -9,4 +9,4 @@ router.post("/topics/:topicId/posts/:postId/favorites/create",
 router.post("/topics/:topicId/posts/:postId/favorites/:id/destroy",
   favoriteController.destroy);
 
-module.exports = router;
+module.exports = router; 

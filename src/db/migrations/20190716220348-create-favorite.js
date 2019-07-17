@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
 
+ // #1
       postId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
@@ -19,6 +20,7 @@ module.exports = {
           as: "postId"
         }
       },
+ // #2
       userId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",

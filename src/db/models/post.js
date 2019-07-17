@@ -45,12 +45,12 @@ module.exports = (sequelize, DataTypes) => {
       as: "favorites"
     });
 
-    // Post.afterCreate((post, callback) => {
-    //   return models.Favorite.create({
-    //     userId: post.userId,
-    //     postId: post.id
-    //   });
-    // });
+    Post.afterCreate((post, callback) => {
+      return models.Favorite.create({
+        userId: post.userId,
+        postId: post.id
+      });
+    });
 
   };
 
@@ -64,5 +64,6 @@ module.exports = (sequelize, DataTypes) => {
    Post.prototype.getFavoriteFor = function(userId){
     return this.favorites.find((favorite) => { return favorite.userId == userId });
   };
+
   return Post;
 };
