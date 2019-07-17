@@ -165,8 +165,10 @@ describe("routes : favorites", () => {
 
             request.post(`${base}${this.topic.id}/posts/${this.post.id}/favorites/${favorite.id}/destroy`,
               (err, res, body) => {
+                console.log(err, body);
                 this.post.getFavorites()
                 .then((favorites) => {
+                  console.log(favorites);
                   expect(favorites.length).toBe(favCountBeforeDelete - 1);
                   done();
                 });
